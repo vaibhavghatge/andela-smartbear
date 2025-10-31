@@ -51,7 +51,9 @@ public class BritishTimeSpeakerParameterizedTest {
         "10:50, ten to eleven",
         "11:55, five to twelve",
         "00:00, midnight",
-        "12:00, noon"
+        "12:00, noon",
+        "04:43, four forty three",
+        "04:53, four fifty three"
     })
     @DisplayName("Parameterized spoken time cases")
     void parameterizedCases(String input, String expected) {

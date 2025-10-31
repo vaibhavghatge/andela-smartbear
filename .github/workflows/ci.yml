@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: build/reports/jacoco/test
+          path: build/reports/jacoco
 
       # Upload test results (JUnit XML)
       - name: Upload JUnit test results

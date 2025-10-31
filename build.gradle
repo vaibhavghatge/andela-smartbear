@@ -48,3 +48,11 @@ jacocoTestReport {
 application {
     mainClass = 'com.andela.smartbear.britishtime.Main'
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': application.mainClass
+        )
+    }
+}

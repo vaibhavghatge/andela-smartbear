@@ -59,6 +59,9 @@ public class BritishTimeSpeaker implements TimeSpeaker {
      */
     @Override
     public String speak(int hour, int minute) {
+        if (hour < 0 || hour > 23) {
+            throw new IllegalArgumentException("Hour must be between 0 and 23");
+        }
         if (minute < 0 || minute > 59) {
             throw new IllegalArgumentException("Minute must be between 0 and 59");
         }
@@ -87,13 +90,13 @@ public class BritishTimeSpeaker implements TimeSpeaker {
 
         // <30 -> past
         if (minute < 30) {
-            return minuteToWords(minute) + " past " + numberToWord(displayHour);
+            return NUM_WORDS.get(minute) + " past " + numberToWord(displayHour);
         }
 
         if(minute%5==0){
             int minutesTo = 60 - minute;
             int nextHour = (displayHour % 12) + 1;
-            return minuteToWords(minutesTo) + " to " + numberToWord(nextHour);
+            return NUM_WORDS.get(minutesTo) + " to " + numberToWord(nextHour);
         }
         // digital form for non mod 5
         return numberToWord(displayHour) + " " + numberToWord(minute);
@@ -103,23 +106,12 @@ public class BritishTimeSpeaker implements TimeSpeaker {
         if (NUM_WORDS.containsKey(n)) {
             return NUM_WORDS.get(n);
         }
-        if (n < 40) {
-            return "thirty" + (n == 30 ? "" : " " + NUM_WORDS.get(n - 30));
-        } else if (n < 50) {
-            return "forty" + (n == 40 ? "" : " " + NUM_WORDS.get(n - 40));
-        } else if (n < 60) {
-            return "fifty" + (n == 50 ? "" : " " + NUM_WORDS.get(n - 50));
-        }
-        return String.valueOf(n); // fallback for unexpected numbers
+        return switch (n / 10) {
+            case 3 -> "thirty" + (n == 30 ? "" : " " + NUM_WORDS.get(n - 30));
+            case 4 -> "forty" + (n == 40 ? "" : " " + NUM_WORDS.get(n - 40));
+            case 5 -> "fifty" + (n == 50 ? "" : " " + NUM_WORDS.get(n - 50));
+            default -> String.valueOf(n); // fallback for unexpected numbers
+        };
     }
 
-    private String minuteToWords(int minute) {
-        if (minute <= 30) {
-            String w = NUM_WORDS.get(minute);
-            if ("quarter".equals(w) || "half".equals(w)) return w;
-            return w;
-        }
-
-        return String.valueOf(minute);
-    }
 }

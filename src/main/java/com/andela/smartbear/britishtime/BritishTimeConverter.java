@@ -18,6 +18,9 @@ public class BritishTimeConverter {
         String[] parts = time.split(":");
         int hour = Integer.parseInt(parts[0]) % 24;
         int minute = Integer.parseInt(parts[1]);
+        if (hour < 0 || hour > 23) {
+            throw new IllegalArgumentException("Hour must be between 0 and 23");
+        }
         if (minute < 0 || minute > 59) {
             throw new IllegalArgumentException("Minute must be between 0 and 59");
         }
