@@ -39,5 +39,6 @@ public class BritishTimeConverterTest {
         assertThrows(IllegalArgumentException.class, () -> converter.toBritishSpoken("2400"));
         assertThrows(IllegalArgumentException.class, () -> converter.toBritishSpoken("12:60"));
         assertThrows(IllegalArgumentException.class, () -> converter.toBritishSpoken(null));
+        assertThrows(IllegalArgumentException.class, () -> converter.toBritishSpoken("32:50"));
     }
 }
