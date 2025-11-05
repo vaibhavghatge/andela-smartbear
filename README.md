@@ -25,7 +25,7 @@ This project demonstrates clean code architecture using the **Strategy** and **F
 ```
 src/main/java/com/andela/smartbear/britishtime
 │
-├── strategy
+├── TimeConverter
 │ ├── TimeSpeakerStrategy.java
 │ ├── ExactHourStrategy.java
 │ ├── QuarterPastStrategy.java
@@ -46,8 +46,8 @@ src/main/java/com/andela/smartbear/britishtime
 
 ## ⚙️ How It Works
 
-The `TimeConverter` delegates time interpretation to the `TimeSpeakerFactory`,  
-which dynamically picks a strategy class that implements `TimeSpeakerStrategy`.
+The `BritishTimeSpeaker` delegates time interpretation to the `TimeConverterFactory`,  
+which dynamically picks a strategy class that implements `TimeConverterStrategy`.
 
 Each strategy provides its own implementation of `convert(int hour, int minute)`.
 
