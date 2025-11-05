@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # Faster checkout with shallow clone
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Set up JDK 21 with Gradle caching
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      # Ensure wrapper is executable
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      # Run build with parallel threads, no daemon shutdown delay
+      - name: Run tests, Checkstyle, and JaCoCo
+        run: ./gradlew clean test check jacocoTestReport --parallel --no-daemon --info
+
+      # Upload JaCoCo HTML report (coverage)
+      - name: Upload JaCoCo HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: build/reports/jacoco
+
+      # Upload test results (JUnit XML)
+      - name: Upload JUnit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: build/test-results/test
+
+      # (Optional) Upload Checkstyle results if you have them
+      - name: Upload Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report
+          path: build/reports/checkstyle
